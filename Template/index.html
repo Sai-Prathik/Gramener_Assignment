@@ -7,32 +7,40 @@
     
     <title>Document</title>
     <style>
+        #table-wrap{
+            min-height: 10%;
+        }
+        .content-wrap{
+            display: flex;
+            justify-content: center;
+        }
         table{
-            overflow: scroll;
+            overflow-y: scroll;
             max-height: 20%;
         }
         table, th, td {
           border: 1px solid black;
           border-collapse: collapse;
         }
+ 
         </style>
 </head>
 <body> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <div>
+    <div class="content-wrap">
         <div>
             <div>
-                <input id="page_url"/>
+                <input style="width: 90%;margin-bottom: 2%;" id="page_url"/>
                 <button id="submit_url">Submit</button>
             </div>
 
             <div>
-                <textarea id="scraped_content" rows="40" cols="100"></textarea>
-                <button id="save">Save</button>
+                <textarea id="scraped_content" style="display: block;margin-bottom: 2%;" rows="30" cols="100"></textarea>
+                <button id="save" style="margin-bottom: 2%;">Store Result</button>
             </div>
 
-            <div>
-                <table id="data_table"width="50%">
+            <div id="table-wrap">
+                <table id="data_table"width="100%">
                     <tr>
                         <th>ID</th>
                         <th>Content</th>
