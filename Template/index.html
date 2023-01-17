@@ -20,6 +20,16 @@
                 <textarea id="scraped_content" rows="40" cols="100"></textarea>
                 <button id="save">Save</button>
             </div>
+
+            <div>
+                <table id="data_table"width="100%">
+                    <tr>
+                        <th>ID</th>
+                        <th>Content</th>
+                    </tr>
+                     
+                </table>
+            </div>
         </div>
     </div>
 
@@ -47,7 +57,29 @@
                 data:JSON.stringify({"content":data}),
                 success:function(response){
                      $.ajax({url:"/get_content/",
-                     method:"GET"
+                     method:"GET",
+                     success:function(response){
+                        var table = document.getElementById("data_table")
+                        var num=0
+                        response.response["dt"].forEach(element => {
+                            num+=1
+                            console.log(element)
+                            var tr = document.createElement("tr")
+                            var td1 = document.createElement("td") 
+                            td1.innerHTML=num
+                            var td2 = document.createElement("td")
+                            if(element.content[1].length>20){
+                                td2.innerHTML=element.content[1].slice(0,20)
+                            }
+                            else{
+
+                                td2.innerHTML=element
+                            }
+                            tr.append(td1)
+                            tr.append(td2)
+                            table.append(tr)
+                        });
+                     }
                     }) 
                 }
             })

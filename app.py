@@ -26,10 +26,10 @@ def save_data():
     
     try:
         con = sqlite3.connect("database.db")
-        cur = con.cursor()
-        query='''INSERT INTO contents VALUES ('''+"'"+content+"'"+''')'''
-        print(query)
-        cur.execute(query)
+        cur = con.cursor()  
+        cur.execute("SELECT * from contents")
+        n = len(cur.fetchall()) 
+        cur.execute('''INSERT INTO contents VALUES(?,?)''',(n+1,"str(content)"))
         con.commit() 
         con.close()
         return "Success"
@@ -44,11 +44,14 @@ def get_data():
         con = sqlite3.connect("database.db")
         cur = con.cursor()
         data = cur.execute("SELECT * from contents")
+        saved_data={"dt":[]}
         for i in data:
-            print(i)
+            d={}
+            d["content"]=i
+            saved_data["dt"].append(d)
         con.commit() 
-        con.close()
-        return "SUCCESS"
+        con.close() 
+        return {"response":saved_data}
     except Exception as e:
         print(e)
         return "FAILED"
