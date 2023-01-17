@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <title>Document</title>
+    <style>
+        table{
+            overflow: scroll;
+            max-height: 20%;
+        }
+        table, th, td {
+          border: 1px solid black;
+          border-collapse: collapse;
+        }
+        </style>
 </head>
 <body> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
@@ -22,7 +32,7 @@
             </div>
 
             <div>
-                <table id="data_table"width="100%">
+                <table id="data_table"width="50%">
                     <tr>
                         <th>ID</th>
                         <th>Content</th>
@@ -34,6 +44,34 @@
     </div>
 
     <script>
+        window.onload=()=>{
+            $.ajax({url:"/get_content/",
+                     method:"GET",
+                     success:function(response){
+                        var table = document.getElementById("data_table")
+                        var num=0
+                        response.response["dt"].forEach(element => {
+                            num+=1
+                            console.log(element)
+                            var tr = document.createElement("tr")
+                            var td1 = document.createElement("td") 
+                            td1.innerHTML=num
+                            var td2 = document.createElement("td")
+                            if(element.content[1].length>20){
+                                td2.innerHTML=element.content[1].slice(0,50)+"....."
+                            }
+                            else{
+
+                                td2.innerHTML=element.content[1]
+                            }
+                            tr.append(td1)
+                            tr.append(td2)
+                            table.append(tr)
+                        });
+                    }
+                })
+                
+        }
         document.getElementById("submit_url").onclick=()=>{
             var target_url = document.getElementById("page_url").value
             $.ajax({
@@ -60,6 +98,11 @@
                      method:"GET",
                      success:function(response){
                         var table = document.getElementById("data_table")
+                        table.innerHTML=" "
+                        var h1 = document.createElement("th")
+                        h1.innerHTML = "ID"
+                        var h2 = document.createElement("th")
+                        h2.innerHTML = "Content"
                         var num=0
                         response.response["dt"].forEach(element => {
                             num+=1
@@ -69,11 +112,11 @@
                             td1.innerHTML=num
                             var td2 = document.createElement("td")
                             if(element.content[1].length>20){
-                                td2.innerHTML=element.content[1].slice(0,20)
+                                td2.innerHTML=element.content[1].slice(0,50)+"....."
                             }
                             else{
 
-                                td2.innerHTML=element
+                                td2.innerHTML=element.content[1]
                             }
                             tr.append(td1)
                             tr.append(td2)

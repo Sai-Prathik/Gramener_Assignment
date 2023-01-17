@@ -29,7 +29,7 @@ def save_data():
         cur = con.cursor()  
         cur.execute("SELECT * from contents")
         n = len(cur.fetchall()) 
-        cur.execute('''INSERT INTO contents VALUES(?,?)''',(n+1,"str(content)"))
+        cur.execute('''INSERT INTO contents VALUES(?,?)''',(n+1,content))
         con.commit() 
         con.close()
         return "Success"
