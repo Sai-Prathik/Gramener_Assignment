@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Document</title>
+</head>
+<body> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <div>
+        <div>
+            <div>
+                <input id="page_url"/>
+                <button id="submit_url">Submit</button>
+            </div>
+
+            <div>
+                <textarea id="scraped_content" rows="40" cols="100"></textarea>
+                <button id="save">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("submit_url").onclick=()=>{
+            var target_url = document.getElementById("page_url").value
+            $.ajax({
+                url:"/get_url/",
+                method:"POST",
+                contentType:"application/json",
+                data:JSON.stringify({"url":target_url}),
+                success:function(response){
+                    console.log(response)
+                    document.getElementById("scraped_content").innerHTML=response.content 
+                }
+            })
+        }
+
+        document.getElementById("save").onclick=()=>{
+            var data = document.getElementById("scraped_content").innerHTML
+            $.ajax({
+                url:"/save_content/",
+                method:"POST",
+                contentType:"application/json",
+                data:JSON.stringify({"content":data}),
+                success:function(response){
+                     $.ajax({url:"/get_content/",
+                     method:"GET"
+                    }) 
+                }
+            })
+        }
+    </script>
+</body>
+</html>
